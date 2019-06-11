@@ -1,0 +1,51 @@
+<project name="Deployment Scripts" default="df14" basedir="." xmlns:sf="antlib:com.salesforce">
+ 	   
+    <property file="build.properties"/>  
+	
+	<target name="df14"> 	
+	<taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+        <classpath>
+            <pathelement location="ant-salesforce.jar" />        	
+        </classpath>
+    </taskdef>
+				
+		<echo message="${sf.username}"/> 
+    <mkdir dir="retrieveOutput"/>
+		<sf:retrieve 
+			     username="${sf.username}" 
+			     password="${sf.password}" 
+			     serverurl="${sf.serverurl}" 
+			     retrieveTarget="${sf.retrieveTarget}" 
+			     unpackaged="${sf.unpackaged}" /> 
+	</target>  
+	
+	<target name="deploy">
+	<taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+        <classpath>
+            <pathelement location="ant-salesforce.jar" />        	
+        </classpath>
+    </taskdef>
+				
+		<sf:deploy 
+			   username="${sf1.username}" 
+			   password="${sf1.password}" 
+			   serverurl="${sf1.serverurl}" 
+			   deployRoot="src" 
+			   maxPoll="1000" 
+			   testLevel="NoTestRun" 
+			   checkOnly="false" 
+			   pollWaitMillis="10000" 
+			   rollbackOnError="true"/>
+	</target> 
+	<target name="deployTest">
+	<taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
+		<classpath>
+		    <pathelement location="ant-salesforce.jar" />        	
+		</classpath>
+	</taskdef>
+       <sf:deploy username="${sf1.username}" password="${sf1.password}"
+        serverurl="${sf1.serverurl}"
+        maxPoll="${sf1.maxPoll}" deployRoot="src" testLevel="NoTestRun"/>
+</target>
+	
+</project>
